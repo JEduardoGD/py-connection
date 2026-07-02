@@ -15,6 +15,13 @@ This script doesn't require any third-party library dependencies (it uses only s
   - **Daily-Based Log File**: Generates structured, timestamped logs in a local log file that automatically embeds the current date (e.g., `connection_check_YYYY-MM-DD.log`).
 - **CLI Options**: Supports custom timeouts, custom log files (which will also append the date), and verbose outputs.
 
+## Configuration
+
+The script loads its default settings and testing targets from `parameters.json`. You can modify this file to:
+- Change the target servers (DNS or HTTP) that the script tests.
+- Update the default timeout for the tests.
+- Change the default base name for the log file.
+
 ## Usage
 
 ### Run Once (Default)
@@ -28,8 +35,6 @@ To see full diagnostics step-by-step:
 ```bash
 python check_connection.py --verbose
 ```
-
-
 
 ### Specify a Custom Log File
 ```bash
