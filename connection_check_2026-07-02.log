@@ -1,0 +1,45 @@
+2026-07-02 15:57:16 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 15:57:16 - [INFO] - Diagnostics completed. Success rate: 100.0% (8/8 checks passed)
+2026-07-02 15:57:16 - [INFO] - Average connection latency: 112.9ms
+2026-07-02 15:57:16 - [INFO] - Overall Internet Connection Status: GOOD (Normal latency, 100% reliable)
+2026-07-02 15:57:16 - [INFO] - Detailed logs saved to connection_check_2026-07-02.log
+2026-07-02 15:57:55 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 15:57:55 - [DEBUG] - DNS Resolution: Resolved www.google.com successfully in 12.4ms
+2026-07-02 15:57:55 - [DEBUG] - DNS Resolution: Resolved www.cloudflare.com successfully in 0.3ms
+2026-07-02 15:57:55 - [DEBUG] - TCP Connect: Connected to Cloudflare DNS (1.1.1.1:53) in 33.5ms
+2026-07-02 15:57:55 - [DEBUG] - TCP Connect: Connected to Google DNS (8.8.8.8:53) in 10.3ms
+2026-07-02 15:57:55 - [DEBUG] - TCP Connect: Connected to Google Web (www.google.com:80) in 34.8ms
+2026-07-02 15:57:55 - [DEBUG] - TCP Connect: Connected to Cloudflare Web (www.cloudflare.com:443) in 29.8ms
+2026-07-02 15:57:55 - [DEBUG] - HTTP GET: Loaded https://www.google.com (Status: 200) in 175.8ms
+2026-07-02 15:57:56 - [DEBUG] - HTTP GET: Loaded https://www.cloudflare.com (Status: 200) in 362.3ms
+2026-07-02 15:57:56 - [INFO] - Diagnostics completed. Success rate: 100.0% (8/8 checks passed)
+2026-07-02 15:57:56 - [INFO] - Average connection latency: 107.7ms
+2026-07-02 15:57:56 - [INFO] - Overall Internet Connection Status: GOOD (Normal latency, 100% reliable)
+2026-07-02 15:57:56 - [INFO] - Detailed logs saved to connection_check_2026-07-02.log
+2026-07-02 15:59:29 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 15:59:30 - [INFO] - Diagnostics completed. Success rate: 100.0% (8/8 checks passed)
+2026-07-02 15:59:30 - [INFO] - Average connection latency: 122.8ms
+2026-07-02 15:59:30 - [INFO] - Overall Internet Connection Status: GOOD (Normal latency, 100% reliable)
+2026-07-02 15:59:30 - [INFO] - Detailed logs saved to connection_check_2026-07-02.log
+2026-07-02 16:01:14 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 16:01:15 - [INFO] - Diagnostics completed. Success rate: 100.0% (8/8 checks passed)
+2026-07-02 16:01:15 - [INFO] - Average connection latency: 115.8ms
+2026-07-02 16:01:15 - [INFO] - Overall Internet Connection Status: GOOD (Normal latency, 100% reliable)
+2026-07-02 16:01:15 - [INFO] - Detailed logs saved to connection_check_2026-07-02.log
+2026-07-02 16:01:27 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 16:01:27 - [WARNING] - DNS Resolution: Failed to resolve www.google.com
+2026-07-02 16:01:27 - [WARNING] - DNS Resolution: Failed to resolve www.cloudflare.com
+2026-07-02 16:01:27 - [WARNING] - TCP Connect: Failed to connect to Cloudflare DNS (1.1.1.1:53)
+2026-07-02 16:01:27 - [WARNING] - TCP Connect: Failed to connect to Google DNS (8.8.8.8:53)
+2026-07-02 16:01:27 - [WARNING] - TCP Connect: Failed to connect to Google Web (www.google.com:80)
+2026-07-02 16:01:27 - [WARNING] - TCP Connect: Failed to connect to Cloudflare Web (www.cloudflare.com:443)
+2026-07-02 16:01:27 - [WARNING] - HTTP GET: Failed to load https://www.google.com (Status/Error: URLError)
+2026-07-02 16:01:27 - [WARNING] - HTTP GET: Failed to load https://www.cloudflare.com (Status/Error: URLError)
+2026-07-02 16:01:27 - [INFO] - Diagnostics completed. Success rate: 0.0% (0/8 checks passed)
+2026-07-02 16:01:27 - [CRITICAL] - Overall Internet Connection Status: NO INTERNET (All checks failed)
+2026-07-02 16:01:27 - [INFO] - Detailed logs saved to connection_check_2026-07-02.log
+2026-07-02 16:01:46 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 16:01:47 - [INFO] - Diagnostics completed. Success rate: 100.0% (8/8 checks passed)
+2026-07-02 16:01:47 - [INFO] - Average connection latency: 114.7ms
+2026-07-02 16:01:47 - [INFO] - Overall Internet Connection Status: GOOD (Normal latency, 100% reliable)
+2026-07-02 16:01:47 - [INFO] - Detailed logs saved to connection_check_2026-07-02.log

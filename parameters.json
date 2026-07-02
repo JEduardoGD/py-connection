@@ -1,0 +1,33 @@
+{
+    "default_log_file": "connection_check.log",
+    "default_timeout": 3.0,
+    "default_interval": 10.0,
+    "test_targets": [
+        {
+            "name": "Cloudflare DNS",
+            "host": "1.1.1.1",
+            "port": 53,
+            "type": "dns_server"
+        },
+        {
+            "name": "Google DNS",
+            "host": "8.8.8.8",
+            "port": 53,
+            "type": "dns_server"
+        },
+        {
+            "name": "Google Web",
+            "host": "www.google.com",
+            "port": 80,
+            "type": "web_server",
+            "url": "https://www.google.com"
+        },
+        {
+            "name": "Cloudflare Web",
+            "host": "www.cloudflare.com",
+            "port": 443,
+            "type": "web_server",
+            "url": "https://www.cloudflare.com"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+2026-07-02 15:53:47 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 15:53:47 - [DEBUG] - DNS Resolution: Resolved www.google.com successfully in 40.6ms
+2026-07-02 15:53:47 - [DEBUG] - DNS Resolution: Resolved www.cloudflare.com successfully in 3.4ms
+2026-07-02 15:53:47 - [DEBUG] - TCP Connect: Connected to Cloudflare DNS (1.1.1.1:53) in 23.1ms
+2026-07-02 15:53:47 - [DEBUG] - TCP Connect: Connected to Google DNS (8.8.8.8:53) in 6.9ms
+2026-07-02 15:53:47 - [DEBUG] - TCP Connect: Connected to Google Web (www.google.com:80) in 16.9ms
+2026-07-02 15:53:47 - [DEBUG] - TCP Connect: Connected to Cloudflare Web (www.cloudflare.com:443) in 17.1ms
+2026-07-02 15:53:57 - [DEBUG] - HTTP GET: Loaded https://www.google.com (Status: 200) in 9908.8ms
+2026-07-02 15:53:58 - [DEBUG] - HTTP GET: Loaded https://www.cloudflare.com (Status: 200) in 429.6ms
+2026-07-02 15:53:58 - [INFO] - Diagnostics completed. Success rate: 100.0% (8/8 checks passed)
+2026-07-02 15:53:58 - [INFO] - Average connection latency: 1733.8ms
+2026-07-02 15:53:58 - [WARNING] - Overall Internet Connection Status: FAIR (High latency, but reliable connection)
+2026-07-02 15:53:58 - [INFO] - Detailed logs saved to connection_check.log
+2026-07-02 15:55:35 - [INFO] - Starting internet connection diagnostics...
+2026-07-02 15:55:36 - [INFO] - Diagnostics completed. Success rate: 100.0% (8/8 checks passed)
+2026-07-02 15:55:36 - [INFO] - Average connection latency: 164.3ms
+2026-07-02 15:55:36 - [WARNING] - Overall Internet Connection Status: FAIR (High latency, but reliable connection)
+2026-07-02 15:55:36 - [INFO] - Detailed logs saved to connection_check.log
