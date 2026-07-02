@@ -12,8 +12,8 @@ This script doesn't require any third-party library dependencies (it uses only s
   - **HTTP Requests**: Performs simple HTTP GET requests to check end-to-end web availability and status codes.
 - **Double Logging**:
   - **Console Output**: Uses a premium, clean output format with ANSI color-coding for readability.
-  - **Daily-Based Log File**: Generates structured, timestamped logs in a local log file that automatically embeds the current date (e.g., `connection_check_YYYY-MM-DD.log`). If the script is running continuously in `--loop` mode, it automatically switches logging to the new day's file at midnight.
-- **CLI Options**: Supports custom timeouts, custom log files (which will also append the date), verbose outputs, and running continuously in a loop at specified intervals.
+  - **Daily-Based Log File**: Generates structured, timestamped logs in a local log file that automatically embeds the current date (e.g., `connection_check_YYYY-MM-DD.log`).
+- **CLI Options**: Supports custom timeouts, custom log files (which will also append the date), and verbose outputs.
 
 ## Usage
 
@@ -29,15 +29,7 @@ To see full diagnostics step-by-step:
 python check_connection.py --verbose
 ```
 
-### Continuous Loop Mode
-To run checks continuously (ideal for monitoring outages or packet loss over time):
-```bash
-# Check every 10 seconds (default interval)
-python check_connection.py --loop
 
-# Check every 5 seconds, with a 2-second timeout
-python check_connection.py --loop --interval 5 --timeout 2
-```
 
 ### Specify a Custom Log File
 ```bash
@@ -47,7 +39,7 @@ python check_connection.py --log-file my_network_log.log
 ## CLI Reference
 
 ```text
-usage: check_connection.py [-h] [--log-file LOG_FILE] [--timeout TIMEOUT] [--loop] [--interval INTERVAL] [--verbose]
+usage: check_connection.py [-h] [--log-file LOG_FILE] [--timeout TIMEOUT] [--verbose]
 
 Verify internet connectivity and evaluate connection quality.
 
@@ -55,7 +47,5 @@ options:
   -h, --help           show this help message and exit
   --log-file LOG_FILE  Path to the log file (default: connection_check.log)
   --timeout TIMEOUT    Timeout in seconds for each network test (default: 3.0)
-  --loop               Run connection tests continuously in a loop
-  --interval INTERVAL  Interval in seconds between tests when running in loop mode (default: 10.0)
   --verbose            Enable detailed debugging messages in the console
 ```
