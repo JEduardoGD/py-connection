@@ -12,6 +12,7 @@ import datetime
 import logging
 import os
 import socket
+import subprocess
 import sys
 import time
 import urllib.request
@@ -262,6 +263,22 @@ def evaluate_connection(targets, timeout, logger):
     return success_rate, avg_latency, quality
 
 
+def update_gpio(success_rate, logger):
+    """Updates the GPIO status using gpio_control.py based on connection success."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    gpio_script = os.path.join(script_dir, "gpio_control.py")
+    
+    # In case of fail (0.0 success rate), turn OFF. In case of success, turn ON.
+    state = "on" if success_rate > 0 else "off"
+    try:
+        subprocess.run([sys.executable, gpio_script, "17", state], check=True, capture_output=True, text=True)
+        logger.debug(f"GPIO 17 set to {state.upper()} via gpio_control.py")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to call gpio_control.py: {e.stderr.strip() if e.stderr else e}")
+    except Exception as e:
+        logger.error(f"Failed to call gpio_control.py: {e}")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Verify internet connectivity and evaluate connection quality."
@@ -312,13 +329,15 @@ def main():
                     logger.info(f"Day changed. Switched logging to new file: {active_log_file}")
                     last_date = current_date
                 
-                evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
+                success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
+                update_gpio(success_rate, logger)
                 print("-" * 60)
                 time.sleep(args.interval)
         except KeyboardInterrupt:
             logger.info("Checker stopped by user.")
     else:
-        evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
+        success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
+        update_gpio(success_rate, logger)
         logger.info(f"Detailed logs saved to {active_log_file}")
 
 
