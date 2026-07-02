@@ -12,8 +12,10 @@ This script doesn't require any third-party library dependencies (it uses only s
   - **HTTP Requests**: Performs simple HTTP GET requests to check end-to-end web availability and status codes.
 - **Double Logging**:
   - **Console Output**: Uses a premium, clean output format with ANSI color-coding for readability.
-  - **Daily-Based Log File**: Generates structured, timestamped logs in a local log file that automatically embeds the current date (e.g., `connection_check_YYYY-MM-DD.log`).
-- **CLI Options**: Supports custom timeouts, custom log files (which will also append the date), and verbose outputs.
+  - **Daily-Based Log File**: Generates structured, timestamped logs in a local log file that automatically embeds the current date (e.g., `connection_check_YYYY-MM-DD.log`). Log files automatically rotate at midnight during continuous monitoring.
+- **Hardware Integration**: Automatically toggles Raspberry Pi GPIO 17 based on connection status (requires `RPi.GPIO`), turning ON for successful connections and OFF when all tests fail.
+- **Continuous Monitoring**: Supports continuous running mode (`--loop`) with a configurable checking interval.
+- **CLI Options**: Supports custom timeouts, custom log files, continuous loop, and verbose outputs.
 
 ## Configuration
 
@@ -41,10 +43,16 @@ python check_connection.py --verbose
 python check_connection.py --log-file my_network_log.log
 ```
 
+### Run Continuously
+To run tests repeatedly at a specific interval (e.g. 10 seconds):
+```bash
+python check_connection.py --loop --interval 10.0
+```
+
 ## CLI Reference
 
 ```text
-usage: check_connection.py [-h] [--log-file LOG_FILE] [--timeout TIMEOUT] [--verbose]
+usage: check_connection.py [-h] [--log-file LOG_FILE] [--timeout TIMEOUT] [--loop] [--interval INTERVAL] [--verbose]
 
 Verify internet connectivity and evaluate connection quality.
 
@@ -52,5 +60,7 @@ options:
   -h, --help           show this help message and exit
   --log-file LOG_FILE  Path to the log file (default: connection_check.log)
   --timeout TIMEOUT    Timeout in seconds for each network test (default: 3.0)
+  --loop               Run connection tests continuously in a loop
+  --interval INTERVAL  Interval in seconds between tests when running in loop mode (default: 10.0)
   --verbose            Enable detailed debugging messages in the console
 ```
