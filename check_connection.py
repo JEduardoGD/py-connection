@@ -46,6 +46,8 @@ DEFAULT_TEST_TARGETS = _config.get("test_targets", [])
 DEFAULT_LOG_FILE = _config.get("default_log_file", "connection_check.log")
 DEFAULT_TIMEOUT = _config.get("default_timeout", 3.0)
 DEFAULT_INTERVAL = _config.get("default_interval", 10.0)
+GPIO_PORT = str(_config.get("gpio_port", "17"))
+RECOVERY_WAIT_SECONDS = int(_config.get("recovery_wait_seconds", 300))
 
 # Set up logging formatting
 class CustomFormatter(logging.Formatter):
@@ -271,8 +273,8 @@ def update_gpio(success_rate, logger):
     # In case of fail (0.0 success rate), turn OFF. In case of success, turn ON.
     state = "on" if success_rate > 0 else "off"
     try:
-        subprocess.run([sys.executable, gpio_script, "17", state], check=True, capture_output=True, text=True)
-        logger.debug(f"GPIO 17 set to {state.upper()} via gpio_control.py")
+        subprocess.run([sys.executable, gpio_script, GPIO_PORT, state], check=True, capture_output=True, text=True)
+        logger.debug(f"GPIO {GPIO_PORT} set to {state.upper()} via gpio_control.py")
     except subprocess.CalledProcessError as e:
         logger.error(f"Failed to call gpio_control.py: {e.stderr.strip() if e.stderr else e}")
     except Exception as e:
@@ -332,13 +334,13 @@ def main():
                 success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
                 update_gpio(success_rate, logger)
                 if success_rate == 0.0:
-                    logger.info("Internet is down. Waiting 5 minutes before turning GPIO 17 ON...")
-                    time.sleep(300)
+                    logger.info(f"Internet is down. Waiting {RECOVERY_WAIT_SECONDS} seconds before turning GPIO {GPIO_PORT} ON...")
+                    time.sleep(RECOVERY_WAIT_SECONDS)
                     script_dir = os.path.dirname(os.path.abspath(__file__))
                     gpio_script = os.path.join(script_dir, "gpio_control.py")
                     try:
-                        subprocess.run([sys.executable, gpio_script, "17", "on"], check=True, capture_output=True, text=True)
-                        logger.debug("GPIO 17 set to ON via gpio_control.py after 5 minute wait")
+                        subprocess.run([sys.executable, gpio_script, GPIO_PORT, "on"], check=True, capture_output=True, text=True)
+                        logger.debug(f"GPIO {GPIO_PORT} set to ON via gpio_control.py after {RECOVERY_WAIT_SECONDS} second wait")
                     except Exception as e:
                         logger.error(f"Failed to call gpio_control.py: {e}")
                 print("-" * 60)
@@ -349,13 +351,13 @@ def main():
         success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
         update_gpio(success_rate, logger)
         if success_rate == 0.0:
-            logger.info("Internet is down. Waiting 5 minutes before turning GPIO 17 ON...")
-            time.sleep(300)
+            logger.info(f"Internet is down. Waiting {RECOVERY_WAIT_SECONDS} seconds before turning GPIO {GPIO_PORT} ON...")
+            time.sleep(RECOVERY_WAIT_SECONDS)
             script_dir = os.path.dirname(os.path.abspath(__file__))
             gpio_script = os.path.join(script_dir, "gpio_control.py")
             try:
-                subprocess.run([sys.executable, gpio_script, "17", "on"], check=True, capture_output=True, text=True)
-                logger.debug("GPIO 17 set to ON via gpio_control.py after 5 minute wait")
+                subprocess.run([sys.executable, gpio_script, GPIO_PORT, "on"], check=True, capture_output=True, text=True)
+                logger.debug(f"GPIO {GPIO_PORT} set to ON via gpio_control.py after {RECOVERY_WAIT_SECONDS} second wait")
             except Exception as e:
                 logger.error(f"Failed to call gpio_control.py: {e}")
         logger.info(f"Detailed logs saved to {active_log_file}")
