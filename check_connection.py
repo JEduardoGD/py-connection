@@ -331,6 +331,16 @@ def main():
                 
                 success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
                 update_gpio(success_rate, logger)
+                if success_rate == 0.0:
+                    logger.info("Internet is down. Waiting 5 minutes before turning GPIO 17 ON...")
+                    time.sleep(300)
+                    script_dir = os.path.dirname(os.path.abspath(__file__))
+                    gpio_script = os.path.join(script_dir, "gpio_control.py")
+                    try:
+                        subprocess.run([sys.executable, gpio_script, "17", "on"], check=True, capture_output=True, text=True)
+                        logger.debug("GPIO 17 set to ON via gpio_control.py after 5 minute wait")
+                    except Exception as e:
+                        logger.error(f"Failed to call gpio_control.py: {e}")
                 print("-" * 60)
                 time.sleep(args.interval)
         except KeyboardInterrupt:
@@ -338,6 +348,16 @@ def main():
     else:
         success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
         update_gpio(success_rate, logger)
+        if success_rate == 0.0:
+            logger.info("Internet is down. Waiting 5 minutes before turning GPIO 17 ON...")
+            time.sleep(300)
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            gpio_script = os.path.join(script_dir, "gpio_control.py")
+            try:
+                subprocess.run([sys.executable, gpio_script, "17", "on"], check=True, capture_output=True, text=True)
+                logger.debug("GPIO 17 set to ON via gpio_control.py after 5 minute wait")
+            except Exception as e:
+                logger.error(f"Failed to call gpio_control.py: {e}")
         logger.info(f"Detailed logs saved to {active_log_file}")
 
 
