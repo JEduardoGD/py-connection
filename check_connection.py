@@ -264,14 +264,22 @@ def evaluate_connection(targets, timeout, logger):
     logger.log(log_level, f"Overall Internet Connection Status: {quality}")
     return success_rate, avg_latency, quality
 
+def wlan0_reset_routine(logger):
+    logger.info(f"Executing wlan0 reset routine...")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    reset_script = os.path.join(script_dir, "reset_wlan0.py")
+    try:
+        subprocess.run([sys.executable, reset_script], check=True, capture_output=True, text=True)
+        logger.debug("wlan0 reset routine executed successfully")
+    except Exception as e:
+        logger.error(f"Failed to execute reset_wlan0.py: {e}")
 
-def update_gpio(success_rate, logger):
+
+def update_gpio(success_rate, logger, state):
     """Updates the GPIO status using gpio_control.py based on connection success."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
     gpio_script = os.path.join(script_dir, "gpio_control.py")
-    
-    # In case of fail (0.0 success rate), turn OFF. In case of success, turn ON.
-    state = "on" if success_rate > 0 else "off"
+
     try:
         subprocess.run([sys.executable, gpio_script, GPIO_PORT, state], check=True, capture_output=True, text=True)
         logger.debug(f"GPIO {GPIO_PORT} set to {state.upper()} via gpio_control.py")
@@ -333,6 +341,16 @@ def main():
                 
                 success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
                 update_gpio(success_rate, logger)
+                if success_rate < 50.0:
+                    logger.info(f"Success rate ({success_rate}%) is < 50%. Executing wlan0 reset routine...")
+                    script_dir = os.path.dirname(os.path.abspath(__file__))
+                    reset_script = os.path.join(script_dir, "reset_wlan0.py")
+                    try:
+                        subprocess.run([sys.executable, reset_script], check=True, capture_output=True, text=True)
+                        logger.debug("wlan0 reset routine executed successfully")
+                    except Exception as e:
+                        logger.error(f"Failed to execute reset_wlan0.py: {e}")
+
                 if success_rate == 0.0:
                     logger.info(f"Internet is down. Waiting {RECOVERY_WAIT_SECONDS} seconds before turning GPIO {GPIO_PORT} ON...")
                     time.sleep(RECOVERY_WAIT_SECONDS)
@@ -349,17 +367,18 @@ def main():
             logger.info("Checker stopped by user.")
     else:
         success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
-        update_gpio(success_rate, logger)
-        if success_rate == 0.0:
+        
+        if success_rate >= 50.0:
+            logger.info(f"Success rate ({success_rate}%) is >= 50%. Turning GPIO {GPIO_PORT} ON via gpio_control.py...")
+            update_gpio(success_rate, logger, "on")
+
+        if success_rate < 50.0:
+            update_gpio(success_rate, logger, "off")
             logger.info(f"Internet is down. Waiting {RECOVERY_WAIT_SECONDS} seconds before turning GPIO {GPIO_PORT} ON...")
             time.sleep(RECOVERY_WAIT_SECONDS)
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            gpio_script = os.path.join(script_dir, "gpio_control.py")
-            try:
-                subprocess.run([sys.executable, gpio_script, GPIO_PORT, "on"], check=True, capture_output=True, text=True)
-                logger.debug(f"GPIO {GPIO_PORT} set to ON via gpio_control.py after {RECOVERY_WAIT_SECONDS} second wait")
-            except Exception as e:
-                logger.error(f"Failed to call gpio_control.py: {e}")
+            wlan0_reset_routine(logger);
+            update_gpio(success_rate, logger, "on")
+
         logger.info(f"Detailed logs saved to {active_log_file}")
 
 
