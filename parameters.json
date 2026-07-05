@@ -4,6 +4,8 @@
     "default_interval": 10.0,
     "gpio_port": "17",
     "recovery_wait_seconds": 120,
+    "gpio_state_for_internet_ok": "off",
+    "gpio_state_for_internet_fail": "on",
     "test_targets": [
         {
             "name": "Cloudflare DNS",
