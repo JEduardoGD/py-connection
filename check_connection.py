@@ -7,7 +7,6 @@ and evaluate connection quality (DNS, TCP, and HTTP).
 Outputs results to the console and logs to a file.
 """
 
-from check_connection import STATE_FOR_INTERNET_OK
 import argparse
 import datetime
 import logging
@@ -370,7 +369,7 @@ def main():
             logger.info(f"Internet is down. Waiting {RECOVERY_WAIT_SECONDS} seconds before turning GPIO {GPIO_PORT} ON...")
             time.sleep(RECOVERY_WAIT_SECONDS)
             wlan0_reset_routine(logger);
-            update_gpio(success_rate, logger, STATE_FOR_INTERNET_OK)
+            update_gpio(success_rate, logger, GPIO_STATE_FOR_INTERNET_OK)
 
         logger.info(f"Detailed logs saved to {active_log_file}")
 

@@ -13,7 +13,7 @@ This script doesn't require any third-party library dependencies (it uses only s
 - **Double Logging**:
   - **Console Output**: Uses a premium, clean output format with ANSI color-coding for readability.
   - **Daily-Based Log File**: Generates structured, timestamped logs in a local log file that automatically embeds the current date (e.g., `connection_check_YYYY-MM-DD.log`). Log files automatically rotate at midnight during continuous monitoring.
-- **Hardware Integration**: Automatically toggles Raspberry Pi GPIO 17 based on connection status (requires `RPi.GPIO`), turning ON for successful connections and OFF when all tests fail.
+- **Hardware Integration**: Automatically toggles a configured Raspberry Pi GPIO port (default 17) based on connection status (requires `RPi.GPIO`). The specific GPIO logic states for successful and failed connections are configurable.
 - **Continuous Monitoring**: Supports continuous running mode (`--loop`) with a configurable checking interval.
 - **CLI Options**: Supports custom timeouts, custom log files, continuous loop, and verbose outputs.
 
@@ -21,8 +21,9 @@ This script doesn't require any third-party library dependencies (it uses only s
 
 The script loads its default settings and testing targets from `parameters.json`. You can modify this file to:
 - Change the target servers (DNS or HTTP) that the script tests.
-- Update the default timeout for the tests.
+- Update the default timeout and checking interval for the tests.
 - Change the default base name for the log file.
+- Configure hardware integration settings, including the GPIO port and the specific logic states for internet success and failure.
 
 ## Usage
 
