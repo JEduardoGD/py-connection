@@ -23,7 +23,7 @@ The script loads its default settings and testing targets from `parameters.json`
 - Change the target servers (DNS or HTTP) that the script tests.
 - Update the default timeout and checking interval for the tests.
 - Change the default base name for the log file.
-- Configure hardware integration settings, including the GPIO port and the specific logic states for internet success and failure.
+- Configure hardware integration settings, including the GPIO port (`gpio_port`) and the specific logic states for internet success (`gpio_state_for_internet_ok`) and failure (`gpio_state_for_internet_fail`).
 
 ## Usage
 
