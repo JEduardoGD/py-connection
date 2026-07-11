@@ -277,7 +277,7 @@ def wlan0_reset_routine(logger):
         logger.error(f"Failed to execute reset_wlan0.py: {e}")
 
 
-def update_gpio(success_rate, logger, state):
+def update_gpio(logger, state):
     """Updates the GPIO status using gpio_control.py based on connection success."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
     gpio_script = os.path.join(script_dir, "gpio_control.py")
@@ -344,14 +344,14 @@ def main():
                 success_rate, _, _ = evaluate_connection(DEFAULT_TEST_TARGETS, args.timeout, logger)
                 if success_rate >= 50.0:
                     logger.info(f"Success rate ({success_rate}%) is >= 50%. Turning GPIO {GPIO_PORT} {GPIO_STATE_FOR_INTERNET_OK} via gpio_control.py...")
-                    update_gpio(success_rate, logger, GPIO_STATE_FOR_INTERNET_OK)
+                    update_gpio(logger, GPIO_STATE_FOR_INTERNET_OK)
 
                 if success_rate < 50.0:
-                    update_gpio(success_rate, logger, GPIO_STATE_FOR_INTERNET_FAIL)
+                    update_gpio(logger, GPIO_STATE_FOR_INTERNET_FAIL)
                     logger.info(f"Internet is down. Waiting {RECOVERY_WAIT_SECONDS} seconds before turning GPIO {GPIO_PORT} {GPIO_STATE_FOR_INTERNET_OK}...")
                     time.sleep(RECOVERY_WAIT_SECONDS)
                     wlan0_reset_routine(logger);
-                    update_gpio(success_rate, logger, GPIO_STATE_FOR_INTERNET_OK)
+                    update_gpio(logger, GPIO_STATE_FOR_INTERNET_OK)
 
                 print("-" * 60)
                 time.sleep(args.interval)
@@ -362,15 +362,15 @@ def main():
         
         if success_rate >= 50.0:
             logger.info(f"Success rate ({success_rate}%) is >= 50%. Turning GPIO {GPIO_PORT} {GPIO_STATE_FOR_INTERNET_OK} via gpio_control.py...")
-            update_gpio(success_rate, logger, GPIO_STATE_FOR_INTERNET_OK)
+            update_gpio(logger, GPIO_STATE_FOR_INTERNET_OK)
 
         if success_rate < 50.0:
             logger.info(f"Internet is down. Turning GPIO {GPIO_PORT} {GPIO_STATE_FOR_INTERNET_FAIL} via gpio_control.py...")
-            update_gpio(success_rate, logger, GPIO_STATE_FOR_INTERNET_FAIL)
+            update_gpio(logger, GPIO_STATE_FOR_INTERNET_FAIL)
             logger.info(f"Internet is down. Waiting {RECOVERY_WAIT_SECONDS} seconds before turning GPIO {GPIO_PORT} {GPIO_STATE_FOR_INTERNET_OK} via gpio_control.py...")
             time.sleep(RECOVERY_WAIT_SECONDS)
             wlan0_reset_routine(logger);
-            update_gpio(success_rate, logger, GPIO_STATE_FOR_INTERNET_OK)
+            update_gpio(logger, GPIO_STATE_FOR_INTERNET_OK)
 
         logger.info(f"Detailed logs saved to {active_log_file}")
 
